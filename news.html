@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>City News - Smart City Portal</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://kit.fontawesome.com/0e53af926d.js" crossorigin="anonymous"></script>
+  <script src="script.js" defer></script>
+
+</head>
+<script>
+  window.onload = function () {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const apiKey = "0d4b29d358a844bc88a1a760ad45307b";
+
+        fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${apiKey}`)
+          .then(response => response.json())
+          .then(data => {
+            const components = data.results[0].components;
+            const city = components.city || components.town || components.village || components.state;
+            document.getElementById("location-bar").innerText = `📍 ${city}`;
+          })
+          .catch(() => {
+            document.getElementById("location-bar").innerText = "📍 Unable to detect";
+          });
+      }, () => {
+        document.getElementById("location-bar").innerText = "📍 Permission denied";
+      });
+    } else {
+      document.getElementById("location-bar").innerText = "📍 Not supported";
+    }
+  };
+</script>
+
+<body>
+
+  <!-- Header -->
+  <header>
+      <div id="header">
+        <div class="header-logo">
+          <a href="index.html"><img src="images/logo.jpg" alt="City Logo" /></a>
+        </div>
+        <span id="city-name"></span><span id="weather-info"></span>
+
+
+        <nav class="header-list-nav">
+          <ul>
+            <li><a class="active" href="index.html">Home</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-location" id="location-wrapper">
+  <span id="location-bar">📍 Detecting location...</span>
+  <select id="city-select">
+    <option value="">Change City</option>
+    <option value="Hyderabad">Hyderabad</option>
+    <option value="Vijayawada">Vijayawada</option>
+    <option value="Visakhapatnam">Visakhapatnam</option>
+  </select>
+</div>
+
+      </div>
+    </header>
+
+  <!-- Main -->
+  <main>
+    <section class="page-title">
+      <h1>City News & Updates</h1>
+      <p>Stay informed with the latest city developments and announcements</p>
+    </section>
+
+    <section class="news-section">
+      <div class="news-card">
+        <h3>🚌 New Electric Buses Launched</h3>
+        <p>Starting this week, 50 new electric buses will operate across city zones.</p>
+        <span>July 1, 2025</span>
+      </div>
+
+      <div class="news-card">
+        <h3>🌳 Urban Tree Plantation Drive</h3>
+        <p>Join the city’s green mission on July 5 with mass plantation activities in parks and streets.</p>
+        <span>June 28, 2025</span>
+      </div>
+
+      <div class="news-card">
+        <h3>💧 Water Supply Schedule Update</h3>
+        <p>Due to maintenance, evening supply will be delayed in West Zone for 3 days.</p>
+        <span>June 25, 2025</span>
+      </div>
+
+      <div class="news-card">
+        <h3>🏢 New Citizen Help Center Opens</h3>
+        <p>The city opens a digital helpdesk center near Tech Hub for quick in-person services.</p>
+        <span>June 20, 2025</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <!-- Paste your same footer HTML used in index.html -->
+  </footer>
+
+  <!-- Location Script -->
+  <script>
+    window.onload = function () {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          const apiKey = "0d4b29d358a844bc88a1a760ad45307b";
+
+          fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${apiKey}`)
+            .then(response => response.json())
+            .then(data => {
+              const city = data.results[0].components.city ||
+                data.results[0].components.town ||
+                data.results[0].components.village ||
+                data.results[0].components.state;
+              document.getElementById("location-bar").innerText = `📍 ${city}`;
+              renderPlaces(city); // Call render function with detected city
+
+
+            })
+            .catch(() => {
+              document.getElementById("location-bar").innerText = "📍 Unable to detect";
+            });
+        }, () => {
+          document.getElementById("location-bar").innerText = "📍 Permission denied";
+        });
+      } else {
+        document.getElementById("location-bar").innerText = "📍 Not supported";
+      }
+    };
+  </script>
+<script src="script.js"></script>
+</body>
+</html>

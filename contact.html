@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Contact - Smart City Portal</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+
+  </head>
+  <script>
+  window.onload = function () {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const apiKey = "0d4b29d358a844bc88a1a760ad45307b";
+
+        fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${apiKey}`)
+          .then(response => response.json())
+          .then(data => {
+            const components = data.results[0].components;
+            const city = components.city || components.town || components.village || components.state;
+            document.getElementById("location-bar").innerText = `📍 ${city}`;
+          })
+          .catch(() => {
+            document.getElementById("location-bar").innerText = "📍 Unable to detect";
+          });
+      }, () => {
+        document.getElementById("location-bar").innerText = "📍 Permission denied";
+      });
+    } else {
+      document.getElementById("location-bar").innerText = "📍 Not supported";
+    }
+  };
+</script>
+
+  <body>
+    <!-- Header -->
+    <header>
+      <div id="header">
+        <div class="header-logo">
+          <a href="index.html"><img src="images/logo.jpg" alt="City Logo" /></a>
+        </div>
+
+
+
+        <nav class="header-list-nav">
+          <ul>
+            <li><a class="active" href="index.html">Home</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-location" id="location-wrapper">
+  <span id="location-bar">📍 Detecting location...</span>
+          <span id="city-name"></span><span id="weather-info"></span>
+  <select id="city-select">
+    <option value="">Change City</option>
+    <option value="Hyderabad">Hyderabad</option>
+    <option value="Vijayawada">Vijayawada</option>
+    <option value="Visakhapatnam">Visakhapatnam</option>
+  </select>
+</div>
+
+      </div>
+    </header>
+
+    <!-- Contact Section -->
+    <main>
+      <section class="contact-page">
+        <h2>Contact Smart City Helpdesk</h2>
+        <p>We’re here to help you with any queries, issues, or feedback.</p>
+
+        <div class="contact-container">
+          <form class="contact-form">
+            <input type="text" placeholder="Your Name" required />
+            <input type="email" placeholder="Your Email" required />
+            <textarea rows="5" placeholder="Your Message" required></textarea>
+            <button type="submit">Send Message</button>
+          </form>
+
+          <div class="contact-info">
+            <h3>Office Address</h3>
+            <p><b>Smart City HQ</b></p>
+            <p>Main Street, City Center</p>
+            <p>Email: contact@smartcity.gov</p>
+            <p>Phone: +91-1234567890</p>
+            <p>Hours: 09:00 – 18:00 (Mon – Sat)</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2025 Smart City Portal. All rights reserved.</p>
+    </footer>
+
+    <!-- Form Submit Alert -->
+  <script>
+    window.onload = function () {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          const apiKey = "0d4b29d358a844bc88a1a760ad45307b";
+
+          fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${apiKey}`)
+            .then(response => response.json())
+            .then(data => {
+              const city = data.results[0].components.city ||
+                data.results[0].components.town ||
+                data.results[0].components.village ||
+                data.results[0].components.state;
+              document.getElementById("location-bar").innerText = `📍 ${city}`;
+              renderPlaces(city); // Call render function with detected city
+
+
+            })
+            .catch(() => {
+              document.getElementById("location-bar").innerText = "📍 Unable to detect";
+            });
+        }, () => {
+          document.getElementById("location-bar").innerText = "📍 Permission denied";
+        });
+      } else {
+        document.getElementById("location-bar").innerText = "📍 Not supported";
+      }
+    };
+  </script>
+<script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart City Portal</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://kit.fontawesome.com/0e53af926d.js" crossorigin="anonymous"></script>
+    <script src="script.js" defer></script>
+
+  </head>
+  <script>
+  window.onload = function () {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const apiKey = "0d4b29d358a844bc88a1a760ad45307b";
+
+        fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${apiKey}`)
+          .then(response => response.json())
+          .then(data => {
+            const components = data.results[0].components;
+            const city = components.city || components.town || components.village || components.state;
+            document.getElementById("location-bar").innerText = `📍 ${city}`;
+          })
+          .catch(() => {
+            document.getElementById("location-bar").innerText = "📍 Unable to detect";
+          });
+      }, () => {
+        document.getElementById("location-bar").innerText = "📍 Permission denied";
+      });
+    } else {
+      document.getElementById("location-bar").innerText = "📍 Not supported";
+    }
+  };
+</script>
+
+  <body>
+    <!-- Header -->
+    <header>
+      <div id="header">
+        <div class="header-logo">
+          <a href="index.html"><img src="images/logo.jpg" alt="City Logo" /></a>
+        </div>
+        <span id="city-name"></span><span id="weather-info"></span>
+
+
+        <nav class="header-list-nav">
+          <ul>
+            <li><a class="active" href="index.html">Home</a></li>
+            <li><a href="explore.html">Explore city</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-location" id="location-wrapper">
+  <span id="location-bar">📍 Detecting location...</span>
+  <select id="city-select">
+    <option value="">Change City</option>
+    <option value="Hyderabad">Hyderabad</option>
+    <option value="Vijayawada">Vijayawada</option>
+    <option value="Visakhapatnam">Visakhapatnam</option>
+  </select>
+</div>
+
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero">
+      <h2>Welcome to Smart City</h2>
+      <p>Your one-stop platform for city services & updates</p>
+      <button onclick="location.href='services.html'">Explore Services</button>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section-p1">
+      <div class="f-box"><img src="images/features/f1.jpg" /><h6>Emergency</h6></div>
+      <div class="f-box"><img src="images/features/f2.jpg" /><h6>Transport</h6></div>
+      <div class="f-box"><img src="images/features/f3.jpg" /><h6>Environment</h6></div>
+      <div class="f-box"><img src="images/features/f4.jpg" /><h6>Wi-Fi</h6></div>
+    </section>
+
+
+
+    <!-- Services Section -->
+   <!-- <section class="product-section section-p1">
+      <h2>Public Services</h2>
+      <div class="pro-collection">
+        <div class="product-cart"><img src="images/services/electricity.jpg" /><h4>Electricity</h4></div>
+        <div class="product-cart"><img src="images/services/water.jpg" /><h4>Water</h4></div>
+        <div class="product-cart"><img src="images/services/complaint.jpg" /><h4>Report Issue</h4></div>
+        <div class="product-cart"><img src="images/services/traffic.jpg" /><h4>Traffic Updates</h4></div>
+      </div>
+    </section>-->
+
+    <!-- Alert Banner -->
+
+    <!-- Newsletter Section -->
+    <section id="newsletter">
+      <div class="newsletter-text">
+        <h3>Subscribe for Updates</h3>
+        <p>Stay informed on alerts & city news</p>
+      </div>
+      <div class="form">
+        <input type="email" placeholder="Your email" id="email-address-input" />
+        <button>Subscribe</button>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-basic">
+        <p>&copy; 2025 Smart City Portal | All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Location Script -->
+  <script>
+    window.onload = function () {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          const apiKey = "0d4b29d358a844bc88a1a760ad45307b";
+
+          fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${apiKey}`)
+            .then(response => response.json())
+            .then(data => {
+              const city = data.results[0].components.city ||
+                data.results[0].components.town ||
+                data.results[0].components.village ||
+                data.results[0].components.state;
+              document.getElementById("location-bar").innerText = `📍 ${city}`;
+              renderPlaces(city); // Call render function with detected city
+
+
+            })
+            .catch(() => {
+              document.getElementById("location-bar").innerText = "📍 Unable to detect";
+            });
+        }, () => {
+          document.getElementById("location-bar").innerText = "📍 Permission denied";
+        });
+      } else {
+        document.getElementById("location-bar").innerText = "📍 Not supported";
+      }
+    };
+  </script>
+<script src="script.js"></script>
+  </body>
+</html>

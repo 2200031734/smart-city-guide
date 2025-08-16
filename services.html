@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>City Services - Smart City Portal</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://kit.fontawesome.com/0e53af926d.js" crossorigin="anonymous"></script>
+  <script src="script.js" defer></script>
+
+</head>
+<script>
+  window.onload = function () {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const apiKey = "0d4b29d358a844bc88a1a760ad45307b";
+
+        fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${apiKey}`)
+          .then(response => response.json())
+          .then(data => {
+            const components = data.results[0].components;
+            const city = components.city || components.town || components.village || components.state;
+            document.getElementById("location-bar").innerText = `📍 ${city}`;
+          })
+          .catch(() => {
+            document.getElementById("location-bar").innerText = "📍 Unable to detect";
+          });
+      }, () => {
+        document.getElementById("location-bar").innerText = "📍 Permission denied";
+      });
+    } else {
+      document.getElementById("location-bar").innerText = "📍 Not supported";
+    }
+  };
+</script>
+
+<body>
+  <!-- Header -->
+  <header>
+      <div id="header">
+        <div class="header-logo">
+          <a href="index.html"><img src="images/logo.jpg" alt="City Logo" /></a>
+        </div>
+        <span id="city-name"></span><span id="weather-info"></span>
+
+
+        <nav class="header-list-nav">
+          <ul>
+            <li><a class="active" href="index.html">Home</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-location" id="location-wrapper">
+  <span id="location-bar">📍 Detecting location...</span>
+  <select id="city-select">
+    <option value="">Change City</option>
+    <option value="Hyderabad">Hyderabad</option>
+    <option value="Vijayawada">Vijayawada</option>
+    <option value="Visakhapatnam">Visakhapatnam</option>
+  </select>
+</div>
+
+      </div>
+    </header>
+
+  <!-- Main Section -->
+  <main>
+    <section class="page-title">
+      <h1>City Services</h1>
+      <p>Access all government and citizen support services here</p>
+    </section>
+
+    <section class="pro-collection">
+      <div class="product-cart">
+        <img src="images/services/electricity.jpg" alt="electricity" />
+        <span>Utilities</span>
+        <h4>Electricity Bill Payment</h4>
+      </div>
+      <div class="product-cart">
+        <img src="images/services/water.jpg" alt="water" />
+        <span>Utilities</span>
+        <h4>Water Supply Management</h4>
+      </div>
+      <div class="product-cart">
+        <img src="images/services/complaint.jpg" alt="complaint" />
+        <span>Support</span>
+        <h4>Report a Complaint</h4>
+      </div>
+      <div class="product-cart">
+        <img src="images/services/traffic.jpg" alt="traffic" />
+        <span>Mobility</span>
+        <h4>Live Traffic Updates</h4>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer (Same as others) -->
+  <footer>
+    <!-- (Paste your existing footer HTML here) -->
+  </footer>
+
+  <script>
+    window.onload = function () {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          const apiKey = "0d4b29d358a844bc88a1a760ad45307b";
+
+          fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${apiKey}`)
+            .then(response => response.json())
+            .then(data => {
+              const city = data.results[0].components.city ||
+                data.results[0].components.town ||
+                data.results[0].components.village ||
+                data.results[0].components.state;
+              document.getElementById("location-bar").innerText = `📍 ${city}`;
+              renderPlaces(city); // Call render function with detected city
+
+
+            })
+            .catch(() => {
+              document.getElementById("location-bar").innerText = "📍 Unable to detect";
+            });
+        }, () => {
+          document.getElementById("location-bar").innerText = "📍 Permission denied";
+        });
+      } else {
+        document.getElementById("location-bar").innerText = "📍 Not supported";
+      }
+    };
+  </script>
+<script src="script.js"></script>
+</body>
+</html>
